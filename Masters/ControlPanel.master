@@ -6,9 +6,11 @@
 <head runat="server">
     <title>Control Panel</title>
     <link rel="stylesheet" type="text/css" href="../CSSs/ControlPanel.css" />
+    <link rel="stylesheet" type="text/css" href="../CSSs/bootstrap.min.css" />
     <script type="text/javascript" src="../Scripts/UserControlPanelMasterScript.js"></script>
     <script type="text/javascript" src="../Scripts/jquery1.10.2.js"></script>
     <script type="text/javascript" src="../Scripts/jqueryui1.11.3.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
     <script src="http://maps.google.com/maps/api/js?sensor=false&libraries=places,geometry"></script>
     <script type="text/javascript" src="../Scripts/MarkerClusterer.js"></script>
     <script type="text/javascript" src="../Scripts/list.js"></script>

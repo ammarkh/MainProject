@@ -1,3 +1,4 @@
+
 * {
     margin: 0px;
     padding: 0px;
@@ -20,7 +21,7 @@
     top: 60px;
     left: 16%;
     right: 0px;
-    width: 100%;
+    width: 84%;
     height: 100%;
 }
 
@@ -102,3 +103,12 @@
         background-color: #CA3C3C;
         cursor: pointer;
     }
+
+#divAddMarkerMapContainer {
+    width: 100%;
+    height: 100%;
+}
+#divSelectCategory {
+    background-color:rgb(230,230,230);
+    border-radius:2px;
+}

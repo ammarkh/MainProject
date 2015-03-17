@@ -28,15 +28,15 @@ public static class JSONHelper
 
     public static string AllMarkers()
     {
-        DataSet ds = mh.SelectAllMarker();
+        DataSet ds = mh.SelectAllMarkersTest();
         return SerializeDataset(ds);
     }
     public static string MarkersViaUser(int userID)
     {
-        return "";
+        return SerializeDataset(mh.GetMarkerByUserId(userID));
     }
     public static string GetMasterMarkerByUserId(int UserId) 
     {
-        return "";
+        return SerializeDataset(mh.GetMasterByUserId(UserId));
     }
 }
