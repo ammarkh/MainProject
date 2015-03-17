@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data;
+
 /// <summary>
 /// Summary description for UserHelper
 /// </summary>
 public class UserHelper
 {
-    Helper MyHelper;
-
-    public UserHelper()
-    {
-        MyHelper = new Helper();
-    }
-
+    Helper MyHelper = new Helper();
     public DataSet SelectAllUsers()
     {
         MyHelper.OpenConnection();
@@ -39,13 +34,13 @@ public class UserHelper
         MyHelper.OpenConnection();
         DataSet ds = this.SelectAllUsers();
         string[] EmailAndRole = new string[2];
-        int roleId = 0;
+        int roleId=0;
         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
         {
             if (UserName == ds.Tables[0].Rows[i][4].ToString())
             {
                 EmailAndRole[0] = ds.Tables[0].Rows[i][5].ToString();
-                roleId = (int)ds.Tables[0].Rows[i][1];
+                roleId =(int)ds.Tables[0].Rows[i][1];
             }
         }
         MyHelper.OpenConnection();
@@ -92,7 +87,7 @@ public class UserHelper
     }
     public bool CheckPhoneNumberByUsername(string PhoneNumber)
     {
-        bool Found = false;
+        bool Found= false;
         DataSet ds = SelectAllUsers();
         for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             if (PhoneNumber == ds.Tables[0].Rows[i][9].ToString())
@@ -104,4 +99,25 @@ public class UserHelper
         MyHelper.OpenConnection();
         return MyHelper.ExcuteNonQuary("insert into [USERS] (ROLE_ID,FIRST_NAME,LAST_NAME,USERNAME,EMAIL,PASSWORD,ACCOUNT_TYPE_ID,CELLPHONE,GENDER) values('" + MyUser.ROLE_ID + "','" + MyUser.FIRST_NAME + "','" + MyUser.LAST_NAME + "','" + MyUser.USERNAME + "','" + MyUser.EMAIL + "','" + MyUser.PASSWORD + "','" + MyUser.ACCOUNT_TYPE_ID + "','" + MyUser.CELLPHONE + "','" + MyUser.GENDER + "')");
     }
+    public string EditPersonalInfo(USER myUser, int UserId)
+    {
+        MyHelper.OpenConnection();
+        return MyHelper.ExcuteNonQuary("update [USERS] set FIRST_NAME='" + myUser.FIRST_NAME + "',LAST_NAME='" + myUser.LAST_NAME + "' where USER_ID='" + UserId + "' ");
+    }
+    public string EditEmail(USER myUser, int UserId)
+    {
+        MyHelper.OpenConnection();
+        return MyHelper.ExcuteNonQuary("update [USERS] set EMAIL='" + myUser.EMAIL + "' where USER_ID='" + UserId + "' ");
+    }
+    public string EditCellPhone(USER myUser, int UserId)
+    {
+        MyHelper.OpenConnection();
+        return MyHelper.ExcuteNonQuary("update [USERS] set CELLPHONE='" + myUser.CELLPHONE + "' where USER_ID='" + UserId + "' ");
+    }
+    public string EditPassword(USER myUser, int UserId)
+    {
+        MyHelper.OpenConnection();
+        return MyHelper.ExcuteNonQuary("update [USERS] set PASSWORD='" + myUser.PASSWORD + "' where USER_ID='" + UserId + "' ");
+    }
+
 }

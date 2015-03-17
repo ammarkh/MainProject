@@ -37,7 +37,7 @@ public partial class Pages_LogIn_signUp : System.Web.UI.Page
             Session["Email"] = EmailAndRole[0];
             Session["roldId"] = EmailAndRole[1];
             DataSet InfodataSet = Userhelper.GetUserInfoByUsername(tboxUsername.Text);
-            Session["userId"] = InfodataSet.Tables[0].Rows[0][0].ToString();
+            Session["userId"] = InfodataSet.Tables[0].Rows[0][0];
             Response.Redirect("Home.aspx");
         }
         else

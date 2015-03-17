@@ -13,7 +13,7 @@ public class Helper
     SqlConnection Connection;
 	public Helper()
 	{
-        Connection = new SqlConnection(@"server=Joseph\SQLEXPRESS;database=3alyamen;integrated security=true;");
+        Connection = new SqlConnection(@"server=khaled-pc\SQLEXPRESS;database=3alyamen;integrated security=true;");
 	}
     public void OpenConnection()
     {

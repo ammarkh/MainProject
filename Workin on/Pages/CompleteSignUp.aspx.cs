@@ -53,7 +53,7 @@ public partial class Pages_CompleteSignUp : System.Web.UI.Page
                 if (Result == "Done")
                 {
                     DataSet InfodataSet = Userhelper.GetUserInfoByUsername((string)Session["userName"]);
-                    Session["userId"] = InfodataSet.Tables[0].Rows[0][0].ToString();
+                    Session["userId"] = InfodataSet.Tables[0].Rows[0][0];
                     Response.Redirect("Home.aspx");
                 }
                 else

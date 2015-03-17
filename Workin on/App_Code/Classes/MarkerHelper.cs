@@ -16,19 +16,16 @@ public class MarkerHelper
     {
         Helper_Marker = new Helper();
     }
-
     public DataSet SelectAllMarker()
     {
         Helper_Marker.OpenConnection();
         return Helper_Marker.ExcuteSelectQuery("select * from [MARKERS]");
     }
-
     public DataSet SelectAllMarkersXMLOutput()
     {
         Helper_Marker.OpenConnection();
         return Helper_Marker.ExcuteSelectQuery("Select * From [MARKERS] FOR XML RAW,elements,root(\'markers\')");
     }
-
     public int GetMasterId(string MarkerName)
     {
         int MasterId = -1;
@@ -74,7 +71,7 @@ public class MarkerHelper
         Helper_Marker.OpenConnection();
         return Helper_Marker.ExcuteSelectQuery("select * from [MARKERS] where [MARKER_NAME]='" + MarkerName + "'");
     }
-    public DataSet GetMarkerByUserId(string UserId)
+    public DataSet GetMarkerByUserId(int UserId)
     {
         Helper_Marker.OpenConnection();
         return Helper_Marker.ExcuteSelectQuery("select [MARKER_NAME]from [MARKERS] where [USER_ID]='" + UserId + "' ");

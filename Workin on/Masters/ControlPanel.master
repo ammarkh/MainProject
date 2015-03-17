@@ -74,23 +74,22 @@
                     <li>
                         <p id="pMM" onclick="slide('iMM','pMM')"><a href="#">Markers Manegement</a></p>
                         <ul id="iMM">
-                            <li id="addMarker"><a href="UserControlPanel.aspx?index=1">Add Marker</a></li>
-                            <li id="editMarkerInfo"><a href="UserControlPanel.aspx?index=2">Edit Marker Info</a></li>
+                            <li id="addMarker"><a href="UserControlPanel.aspx?index=0">Add Marker</a></li>
+                            <li id="editMarkerInfo"><a href="UserControlPanel.aspx?index=1">Edit Marker Info</a></li>
                         </ul>
                     </li>
                     <li>
                         <p id="pAS" onclick="slide('iAS','pAS')"><a href="#">Account Setting</a></p>
                         <ul id="iAS">
-                            <li id="myInfo"><a href="UserControlPanel.aspx?index=3">My Info</a></li>
-                            <li id="editPersonalInfo"><a href="UserControlPanel.aspx?index=4">Edit Personal Info</a></li>
+                            <li id="myInfo"><a href="UserControlPanel.aspx?index=2">My Info</a></li>
                         </ul>
                     </li>
                     <li>
                         <p id="pA" onclick="slide('iA','pA')"><a href="#">Advertisement</a></p>
                         <ul id="iA">
-                            <li id="addAdvertisemnt"><a href="UserControlPanel.aspx?index=5">Add Advertisement</a></li>
-                            <li id="promoteAdvertisement"><a href="UserControlPanel.aspx?index=6">Promote Advertisement</a></li>
-                            <li id="dropAdvertisement"><a href="UserControlPanel.aspx?index=7">Drop Advertisement</a></li>
+                            <li id="addAdvertisemnt"><a href="UserControlPanel.aspx?index=3">Add Advertisement</a></li>
+                            <li id="promoteAdvertisement"><a href="UserControlPanel.aspx?index=4">Promote Advertisement</a></li>
+                            <li id="dropAdvertisement"><a href="UserControlPanel.aspx?index=5">Drop Advertisement</a></li>
                         </ul>
                     </li>
                     <li>
