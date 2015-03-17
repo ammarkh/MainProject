@@ -76,8 +76,8 @@
                     <li>
                         <p id="pMM" onclick="slide('iMM','pMM')"><a href="#">Markers Manegement</a></p>
                         <ul id="iMM">
-                            <li id="addMarker"><a href="UserControlPanel.aspx?index=1">Add Marker</a></li>
-                            <li id="editMarkerInfo"><a href="UserControlPanel.aspx?index=2">Edit Marker Info</a></li>
+                            <li id="addMarker"><a href="UserControlPanel.aspx?index=1" id="hrefAdd">Add Marker</a></li>
+                            <li id="editMarkerInfo"><a href="UserControlPanel.aspx?index=2" id="hrefEdit">Edit Marker Info</a></li>
                         </ul>
                     </li>
                     <li>

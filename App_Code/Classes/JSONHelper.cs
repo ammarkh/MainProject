@@ -35,8 +35,11 @@ public static class JSONHelper
     {
         return SerializeDataset(mh.GetMarkerByUserId(userID));
     }
-    public static string GetMasterMarkerByUserId(int UserId) 
+    public static string GetMasterMarkerByUserId(int userId) 
     {
-        return SerializeDataset(mh.GetMasterByUserId(UserId));
+        return SerializeDataset(mh.GetMasterByUserId(userId));
+    }
+    public static string GetMarkerInfoViaID(int markerID) {
+        return SerializeDataset(mh.SelectMarkerViaID(markerID));
     }
 }

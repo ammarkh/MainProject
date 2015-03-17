@@ -17,6 +17,12 @@ public class MarkerHelper
         Helper = new Helper();
     }
 
+    public DataSet SelectMarkerViaID(int markerID)
+    {
+        Helper.OpenConnection();
+        return Helper.ExcuteSelectQuery("select * from [MARKERS] where MARKER_ID=" + markerID);
+    }
+
     public DataSet SelectAllMarker()
     {
         Helper.OpenConnection();

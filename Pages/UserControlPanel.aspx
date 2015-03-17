@@ -119,8 +119,33 @@
 
 
         </asp:View>
-        <asp:View ID="ViewDeleteMarker" runat="server">
-            Delete Marker
+        <asp:View ID="ViewEditMarker" runat="server">
+            <!--Data Block-->
+            <asp:HiddenField ID="hfSelectedIDforEdit" runat="server" />
+            <div id="editMarkerMapContainer"></div>
+
+            <!--End Data Block-->
+
+            <!--Edit Data Div-->
+
+            <div class="modal fade" id="EditInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="EditInfolbl"></h4>
+                        </div>
+                        <div class="modal-body">
+                            Edit Info
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="btnSubmitEdit" Text="Save Changes" class="btn btn-primary" runat="server"
+                                ></asp:Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Edit Data Div-->
         </asp:View>
         <asp:View ID="ViewUserInfo" runat="server">
             User Info
@@ -140,7 +165,7 @@
         </asp:View>
 
     </asp:MultiView>
-    <!--2b Sham Script-->
+    <!--AddMarker Script-->
     <script>
 
         (function (window, Codepros) {
@@ -160,78 +185,111 @@
                 tboxSelectedGenre = document.getElementById('<%=hfSelectedGenre.ClientID%>'),
                 tboxMarkerName = document.getElementById('<%=tboxMarkerName.ClientID%>'),
                 tboxAddress = document.getElementById('<%=hfAddress.ClientID%>'),
-                tboxDeterminOP = document.getElementById('<%=hfDeterminOP.ClientID%>');
+                tboxDeterminOP = document.getElementById('<%=hfDeterminOP.ClientID%>'),
+                editMarkerMapContainer = document.getElementById('editMarkerMapContainer'),
+                index = getParameterByName('index'),
+                myMap,
+                editMap;
 
-            var myMap = Codepros.CreateNew(mapContainer, {
-                center: new google.maps.LatLng(35, 35),
-                zoom: 9,
-                geocoder:true
-            });
-            //myMap.PushControl(btnAddMarker, 'top_right');
-            //myMap.PushControl(btnAddBranch, 'top_right');
+            if(index == 1){
+                myMap = Codepros.CreateNew(mapContainer, {
+                    center: new google.maps.LatLng(35, 35),
+                    zoom: 9,
+                    geocoder:true
+                });
 
-            btnAddMarker.onclick = function () {
-                tboxDeterminOP.value = "branch";
-                myMap.gMap.setOptions({ draggableCursor: 'cursor' });
-                myMap._OnOnce({
-                    obj: myMap.gMap,
-                    event: 'click',
-                    callback: function (e) {
-                        tboxLat.value = e.latLng.lat();
-                        tboxLng.value = e.latLng.lng();
+                //myMap.PushControl(btnAddMarker, 'top_right');
+                //myMap.PushControl(btnAddBranch, 'top_right');
 
-                        $('#basicInfo').modal('show');
-                    }
-                })
-            }
+                btnAddMarker.onclick = function () {
+                    myMap.gMap.setOptions({ draggableCursor: 'cursor' });
+                    myMap._OnOnce({
+                        obj: myMap.gMap,
+                        event: 'click',
+                        callback: function (e) {
+                            tboxLat.value = e.latLng.lat();
+                            tboxLng.value = e.latLng.lng();
 
-            btnSubmitBasicInfo.onclick = function () {
-                var address = '';
-                $('#basicInfo').modal('hide');
-                allInfoHeaderLabel.innerHTML = "Adding " + tboxSelectedGenre.value;
-                lblMarkerName.innerHTML = tboxMarkerName.value;
-                myMap.Geocode({
-                    latLng: new google.maps.LatLng(tboxLat.value, tboxLng.value),
-                    success: function (results) {
-                        if (results[0].address_components) {
-                            address = [
-							(results[0].address_components[0] && results[0].address_components[0].short_name || ''),
-							(results[0].address_components[1] && results[0].address_components[1].short_name || ''),
-							(results[0].address_components[2] && results[0].address_components[2].short_name || '')
-                            ].join(' ');
+                            $('#basicInfo').modal('show');
                         }
-                        lblMarkerAddress.innerHTML = address;
-                        tboxAddress.value = address;
-                    }
-                })
-                lblMarkerGenre.innerHTML = tboxSelectedGenre.value;
-                $('#AllInfo').modal('show');
-            }
+                    })
+                }
 
-            ddlSelectGenre.onChange = function () {
-                alert('changed');
-            }
-            btnAddBranch.onclick = function () {
+                btnSubmitBasicInfo.onclick = function () {
+                    var address = '';
+                    $('#basicInfo').modal('hide');
+                    allInfoHeaderLabel.innerHTML = "Adding " + tboxSelectedGenre.value;
+                    lblMarkerName.innerHTML = tboxMarkerName.value;
+                    myMap.Geocode({
+                        latLng: new google.maps.LatLng(tboxLat.value, tboxLng.value),
+                        success: function (results) {
+                            if (results[0].address_components) {
+                                address = [
+                                (results[0].address_components[0] && results[0].address_components[0].short_name || ''),
+                                (results[0].address_components[1] && results[0].address_components[1].short_name || ''),
+                                (results[0].address_components[2] && results[0].address_components[2].short_name || '')
+                                ].join(' ');
+                            }
+                            lblMarkerAddress.innerHTML = address;
+                            tboxAddress.value = address;
+                        }
+                    })
+                    lblMarkerGenre.innerHTML = tboxSelectedGenre.value;
+                    $('#AllInfo').modal('show');
+                }
+
+                ddlSelectGenre.onChange = function () {
+                    alert('changed');
+                }
+
+                btnAddBranch.onclick = function () {
+                    var markers,
+                        markerToAdd,
+                        counter = 0;
+
+                    markers = <%=JSONHelper.GetMasterMarkerByUserId(18)%>;
+                    for( var marker in markers ) {
+                        counter = counter + 1;
+                        markerToAdd = markers[marker];
+                        myMap.CreateMarker({
+                            lat:markerToAdd.LAT,
+                            lng:markerToAdd.LNG,
+                            id:counter,
+                            name:markerToAdd.MARKER_NAME,
+                            animation:google.maps.Animation.DROP,
+                            content:markerToAdd.MARKER_NAME+"<br/>"+markerToAdd.DESCRIPTION+"<br/>Pin this Master<input type='button' id='submit"+counter+"' value='Submit' class = 'btn btn-primary' onClick = 'DetermineMaster("+counter+")'/>"
+                        });
+                    }
+                }
+                //EditMarker
+            } else if(index == 2) {
+
                 var markers,
                     markerToAdd,
                     counter = 0;
 
-                tboxDeterminOP.value = "branch";
-                markers = <%=JSONHelper.GetMasterMarkerByUserId(18)%>;
+                editMap = Codepros.CreateNew(editMarkerMapContainer,{
+                    center:new google.maps.LatLng(35,35),
+                    zoom:9,
+                    geocoder:true
+                });
+
+                markers = <%=JSONHelper.MarkersViaUser(18)%>;
                 for( var marker in markers ) {
                     counter = counter + 1;
                     markerToAdd = markers[marker];
-                    myMap.CreateMarker({
+                    editMap.CreateMarker({
                         lat:markerToAdd.LAT,
                         lng:markerToAdd.LNG,
-                        id:counter,
+                        id:markerToAdd.MARKER_ID,
                         name:markerToAdd.MARKER_NAME,
                         animation:google.maps.Animation.DROP,
-                        content:markerToAdd.MARKER_NAME+"<br/>"+markerToAdd.DESCRIPTION+"<br/>Pin this Master<input type='button' id='submit"+counter+"' value='Submit' class = 'btn btn-primary' onClick = 'DetermineMaster("+counter+")'/>"
+                        content:markerToAdd.MARKER_NAME+"<br/>"+markerToAdd.DESCRIPTION+"<br/>Edit This Marker<input type='button' id='submit"+counter+"' value='Edit' class = 'btn btn-primary' onClick = 'EditMarkerInfo("+markerToAdd.MARKER_ID+")'/>"
                     });
                 }
+                window.editMap = editMap;
             }
-            window.myMap = myMap;
+
         })(window, window.Codepros)
 
         function ChangeLabelText() {
@@ -243,11 +301,12 @@
             tboxSelectedGenre.value = ddlSelectGenre.options[ddlSelectGenre.selectedIndex].text;
             tboxSelectedIndex.value = ddlSelectGenre.selectedIndex+1;
         }
+
         function DetermineMaster( counter ) {
             var tboxSelectedId = document.getElementById('<%=hfSelectedID.ClientID%>'),
                 tboxLat = document.getElementById('<%=hfLat.ClientID%>'),
                 tboxLng = document.getElementById('<%=hfLng.ClientID%>');
-
+            
             myMap.RemoveBy(function(marker){
                 return marker.id != counter;
             });
@@ -262,6 +321,30 @@
                     $('#basicInfo').modal('show');
                 }
             })
+        }
+
+        function EditMarkerInfo( id ) {
+            var tboxSelectedIdforEdit = document.getElementById('<%= hfSelectedIDforEdit.ClientID %>'),
+                selectedMarker;
+                
+            tboxSelectedIdforEdit.value = id;
+            //Stopped Here
+            selectedMarker = <%=JSONHelper.GetMarkerInfoViaID(Convert.ToInt32(hfSelectedIDforEdit.Value))%>;
+            
+            editMap.RemoveBy(function(marker) {
+                return marker.id != id;
+            });
+            console.log(selectedMarker);
+            //$('#EditInfo').modal('show');
+
+
+        }
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
         }
 
     </script>
