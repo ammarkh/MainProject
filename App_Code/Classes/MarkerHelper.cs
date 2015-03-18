@@ -105,11 +105,11 @@ public class MarkerHelper
     public string AddMarker(MARKER toAdd)
     {
         Helper.OpenConnection();
-        return Helper.ExcuteNonQuary("insert into [MARKERS] (USER_ID,MARKER_NAME,DESCRIPTION,LNG,LAT,ADDRESS) values(" + toAdd.USER_ID + ",'" + toAdd.MARKER_NAME + "','" + toAdd.DESCRIPTION + "'," + toAdd.LNG + "," + toAdd.LAT + ",'@" + toAdd.ADDRESS + "')");
+        return Helper.ExcuteNonQuary("insert into [MARKERS] (USER_ID,MARKER_NAME,DESCRIPTION,LNG,LAT,ADDRESS,TYPE) values(" + toAdd.USER_ID + ",'" + toAdd.MARKER_NAME + "','" + toAdd.DESCRIPTION + "'," + toAdd.LNG + "," + toAdd.LAT + ",'@" + toAdd.ADDRESS + "','" + toAdd.TYPE + "')");
     }
     public string AddBranch(MARKER toAdd)
     {
         Helper.OpenConnection();
-        return Helper.ExcuteNonQuary("insert into [MARKERS] (USER_ID,MASTER_ID,MARKER_NAME,DESCRIPTION,LNG,LAT,ADDRESS) values(" + toAdd.USER_ID + "," + toAdd.MASTER_ID + ",'" + toAdd.MARKER_NAME + "','" + toAdd.DESCRIPTION + "'," + toAdd.LNG + "," + toAdd.LAT + ",'@" + toAdd.ADDRESS + "')");
+        return Helper.ExcuteNonQuary("insert into [MARKERS] (USER_ID,MASTER_ID,MARKER_NAME,DESCRIPTION,LNG,LAT,ADDRESS,TYPE) values(" + toAdd.USER_ID + "," + toAdd.MASTER_ID + ",'" + toAdd.MARKER_NAME + "','" + toAdd.DESCRIPTION + "'," + toAdd.LNG + "," + toAdd.LAT + ",'@" + toAdd.ADDRESS + "','" + toAdd.TYPE + "')");
     }
 }

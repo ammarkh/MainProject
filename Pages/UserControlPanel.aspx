@@ -15,14 +15,14 @@
             <asp:HiddenField ID="hfSelectedIndex" runat="server" Value="1" />
             <asp:HiddenField ID="hfAddress" runat="server" />
             <asp:HiddenField ID="hfDeterminOP" runat="server" />
-            <asp:HiddenField ID="hfSelectedID" runat="server" />
+            <asp:HiddenField ID="hfSelectedID" runat="server"/>
+            <asp:Label id="queryTest" runat="server"></asp:Label>
 
             <!--Main Map Div-->
 
             <div id="divAddMarkerMapContainer"></div>
             <input type="button" id="btnAddMarker" class="btn btn-info btn-group-xs" value="Add marker" title="Add Place to the Map" />
             <input type="button" id="btnAddBranch" class="btn btn-info btn-group-xs" value="Add Branch" title="Add Branch to Exsisting Marker" />
-            <asp:Label runat="server" ID="lblTest"></asp:Label>
 
             <!--End Main Div-->
 
@@ -123,6 +123,7 @@
             <!--Data Block-->
             <asp:HiddenField ID="hfSelectedIDforEdit" runat="server" />
             <div id="editMarkerMapContainer"></div>
+            <asp:Label ID="lblTest" runat="server" Text="0"></asp:Label>
 
             <!--End Data Block-->
 
@@ -246,8 +247,9 @@
                     var markers,
                         markerToAdd,
                         counter = 0;
-
+                    
                     markers = <%=JSONHelper.GetMasterMarkerByUserId(18)%>;
+                    <%--markers = <%=JSONHelper.GetMasterMarkerByUserId((int)Session["userId"])%>;--%>
                     for( var marker in markers ) {
                         counter = counter + 1;
                         markerToAdd = markers[marker];
@@ -275,6 +277,7 @@
                 });
 
                 markers = <%=JSONHelper.MarkersViaUser(18)%>;
+                <%--markers = <%=JSONHelper.MarkersViaUser((int)Session["userId"])%>;--%>
                 for( var marker in markers ) {
                     counter = counter + 1;
                     markerToAdd = markers[marker];
@@ -287,9 +290,10 @@
                         content:markerToAdd.MARKER_NAME+"<br/>"+markerToAdd.DESCRIPTION+"<br/>Edit This Marker<input type='button' id='submit"+counter+"' value='Edit' class = 'btn btn-primary' onClick = 'EditMarkerInfo("+markerToAdd.MARKER_ID+")'/>"
                     });
                 }
-                window.editMap = editMap;
             }
-
+            window.editMap = editMap;
+            window.myMap = myMap;
+            
         })(window, window.Codepros)
 
         function ChangeLabelText() {
@@ -323,22 +327,24 @@
             })
         }
 
-        function EditMarkerInfo( id ) {
-            var tboxSelectedIdforEdit = document.getElementById('<%= hfSelectedIDforEdit.ClientID %>'),
-                selectedMarker;
+            function EditMarkerInfo( id ) {
+                var tboxSelectedIdforEdit = document.getElementById('<%= hfSelectedIDforEdit.ClientID %>'),
+                    selectedMarker,
+                    lblEditInfoHeader = document.getElementById('EditInfolbl'),
+                    lbl = document.getElementById('<%=lblTest.ClientID%>');
+
+                lbl.innerText = id;
+                console.log(lbl.innerText);
                 
-            tboxSelectedIdforEdit.value = id;
-            //Stopped Here
-            selectedMarker = <%=JSONHelper.GetMarkerInfoViaID(Convert.ToInt32(hfSelectedIDforEdit.Value))%>;
-            
-            editMap.RemoveBy(function(marker) {
-                return marker.id != id;
-            });
-            console.log(selectedMarker);
-            //$('#EditInfo').modal('show');
-
-
-        }
+                selectedMarker = <%=JSONHelper.GetMarkerInfoViaID(Convert.ToInt32(lblTest.Text))%>;
+                console.log(selectedMarker);
+                //editMap.RemoveBy(function(marker) {
+                //    return marker.id != id;
+                //});
+                lblEditInfoHeader.innerHTML = "Editing "+ selectedMarker[0].MARKER_NAME;
+                $('#EditInfo').modal('show');
+                
+            }
 
         function getParameterByName(name) {
             name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

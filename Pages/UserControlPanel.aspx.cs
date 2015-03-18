@@ -42,14 +42,16 @@ public partial class Pages_UserControlPanel : System.Web.UI.Page
             markerToAdd.LAT = Convert.ToDecimal(hfLat.Value);
             markerToAdd.LNG = Convert.ToDecimal(hfLng.Value);
             markerToAdd.DESCRIPTION = tboxDescription.Value;
+            markerToAdd.TYPE = hfSelectedGenre.Value;
             markerToAdd.ADDRESS = hfAddress.Value;
             string result = markerHelper.AddMarker(markerToAdd);
+            queryTest.Text = result;
         }
         //Adding Branch
         else if (hfSelectedID.Value.Length > 0)
         {
             DataSet usersMarkers = markerHelper.GetMasterByUserId(18);
-            int SelectedMasterID = Convert.ToInt32(usersMarkers.Tables[0].Rows[Convert.ToInt32(hfSelectedID.Value) - 1][0]);
+            int SelectedMasterID = Convert.ToInt32(usersMarkers.Tables[0].Rows[Convert.ToInt32(hfSelectedID.Value)][0]);
             MARKER markerToAdd = new MARKER();
             //markerToAdd.USER_ID = (int)Session["userId"];
             markerToAdd.USER_ID = 18;
@@ -58,7 +60,9 @@ public partial class Pages_UserControlPanel : System.Web.UI.Page
             markerToAdd.LNG = Convert.ToDecimal(hfLng.Value);
             markerToAdd.DESCRIPTION = tboxDescription.Value;
             markerToAdd.ADDRESS = hfAddress.Value;
-            markerHelper.AddBranch(markerToAdd);
+            markerToAdd.TYPE = hfSelectedGenre.Value;
+            string result = markerHelper.AddBranch(markerToAdd);
+            queryTest.Text = result;
             hfSelectedID.Value = string.Empty;
         }
         //Adding Phone Number
